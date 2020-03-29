@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29920.165
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YDSCodeSample", "YDSCodeSample\YDSCodeSample.csproj", "{B8320A24-7A37-47C1-BE1F-77756D3D1FAC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B8320A24-7A37-47C1-BE1F-77756D3D1FAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8320A24-7A37-47C1-BE1F-77756D3D1FAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8320A24-7A37-47C1-BE1F-77756D3D1FAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8320A24-7A37-47C1-BE1F-77756D3D1FAC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E0F49F44-8794-40A3-B669-1BBDF707F2A5}
+	EndGlobalSection
+EndGlobal
