@@ -1,6 +1,8 @@
 ﻿using System;
 using YDSCodeSample.Models;
 using YDSCodeSample.Services;
+using YDSCodeSample.Services.EventSink;
+using YDSCodeSample.Services.Storage;
 using YDSCodeSample.Views.TaskProperties;
 
 namespace YDSCodeSample.Presenters
@@ -9,12 +11,14 @@ namespace YDSCodeSample.Presenters
     {
         private ITaskPropertiesView view;
         private IStorage storage;
+        private IEventSink eventSink;
         private TaskRecord task;
 
-        public TaskPropertiesPresenter(ITaskPropertiesView view, IStorage storage)
+        public TaskPropertiesPresenter(ITaskPropertiesView view, IStorage storage, IEventSink eventSink)
         {
             this.view = view;
             this.storage = storage;
+            this.eventSink = eventSink;
 
             view.OK += View_OK;
             view.Cancel += View_Cancel;
@@ -33,15 +37,20 @@ namespace YDSCodeSample.Presenters
                 {
                     Id = (new Random(DateTime.Now.Millisecond)).Next(),
                     Title = view.TaskTitle,
-                    Completed = false
+                    Completed = false,
+                    CreationTime = DateTime.Now,
+                    ModificationTime = DateTime.Now
                 };
 
                 storage.CreateTask(task);
+                eventSink.InvokeTaskChanged(this, new ModelChangedEventArgs<TaskRecord>(task, ModelChangedAction.Create));
             }
             else
             {
                 task.Title = view.TaskTitle;
-                storage.ModifyTask(task);
+                task.ModificationTime = DateTime.Now;
+                storage.UpdateTask(task);
+                eventSink.InvokeTaskChanged(this, new ModelChangedEventArgs<TaskRecord>(task, ModelChangedAction.Update));
             }
 
             view.Close();

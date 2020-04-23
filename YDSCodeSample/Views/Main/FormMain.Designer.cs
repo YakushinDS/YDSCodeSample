@@ -47,6 +47,8 @@
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.olvColumnCreationTime = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumnModificationTime = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.objectListView)).BeginInit();
             this.contextMenuStrip.SuspendLayout();
@@ -149,22 +151,26 @@
             // objectListView
             // 
             this.objectListView.AllColumns.Add(this.olvColumnTitle);
+            this.objectListView.AllColumns.Add(this.olvColumnCreationTime);
+            this.objectListView.AllColumns.Add(this.olvColumnModificationTime);
             this.objectListView.CellEditUseWholeCell = false;
             this.objectListView.CheckBoxes = true;
             this.objectListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.olvColumnTitle});
+            this.olvColumnTitle,
+            this.olvColumnCreationTime,
+            this.olvColumnModificationTime});
             this.objectListView.ContextMenuStrip = this.contextMenuStrip;
             this.objectListView.Cursor = System.Windows.Forms.Cursors.Default;
             this.objectListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.objectListView.FullRowSelect = true;
             this.objectListView.HideSelection = false;
             this.objectListView.Location = new System.Drawing.Point(0, 24);
-            this.objectListView.MultiSelect = false;
             this.objectListView.Name = "objectListView";
             this.objectListView.ShowGroups = false;
             this.objectListView.Size = new System.Drawing.Size(347, 312);
             this.objectListView.TabIndex = 1;
             this.objectListView.UseCompatibleStateImageBehavior = false;
+            this.objectListView.UseExplorerTheme = true;
             this.objectListView.View = System.Windows.Forms.View.Details;
             this.objectListView.SelectionChanged += new System.EventHandler(this.objectListView_SelectionChanged);
             this.objectListView.DoubleClick += new System.EventHandler(this.objectListView_DoubleClick);
@@ -174,7 +180,7 @@
             this.olvColumnTitle.AspectName = "Title";
             this.olvColumnTitle.FillsFreeSpace = true;
             this.olvColumnTitle.Text = "Title";
-            this.olvColumnTitle.Width = 313;
+            this.olvColumnTitle.Width = 166;
             // 
             // contextMenuStrip
             // 
@@ -182,14 +188,14 @@
             this.propertiesToolStripMenuItem,
             this.deleteToolStripMenuItem});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(181, 70);
+            this.contextMenuStrip.Size = new System.Drawing.Size(133, 48);
             // 
             // propertiesToolStripMenuItem
             // 
             this.propertiesToolStripMenuItem.Enabled = false;
             this.propertiesToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
-            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.propertiesToolStripMenuItem.Text = "Properties";
             this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
             // 
@@ -198,7 +204,7 @@
             this.deleteToolStripMenuItem.Enabled = false;
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
             this.deleteToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
@@ -210,6 +216,18 @@
             // openFileDialog
             // 
             this.openFileDialog.Filter = "Task List files (*.tlf)|*.tlf|All files (*.*)|*.*";
+            // 
+            // olvColumnCreationTime
+            // 
+            this.olvColumnCreationTime.AspectName = "CreationTime";
+            this.olvColumnCreationTime.Text = "Created";
+            this.olvColumnCreationTime.Width = 90;
+            // 
+            // olvColumnModificationTime
+            // 
+            this.olvColumnModificationTime.AspectName = "ModificationTime";
+            this.olvColumnModificationTime.Text = "Modified";
+            this.olvColumnModificationTime.Width = 88;
             // 
             // FormMain
             // 
@@ -251,6 +269,8 @@
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private BrightIdeasSoftware.OLVColumn olvColumnCreationTime;
+        private BrightIdeasSoftware.OLVColumn olvColumnModificationTime;
     }
 }
 

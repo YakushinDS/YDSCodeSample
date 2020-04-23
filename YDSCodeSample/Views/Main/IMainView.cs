@@ -6,25 +6,26 @@ namespace YDSCodeSample.Views.Main
 {
     public interface IMainView : IView
     {
-        event Action<string> OpenFile;
-        event Action<string> CreateFile;
-        event Action CreateTask;
-        event Action<TaskRecord> DeleteTask;
-        event Action<TaskRecord> ModifyTask;
-        event Action<TaskRecord> SetTaskDone;
-        event Action<TaskRecord> SetTaskUndone;
-        event Action Exit;
-        event Action Undo;
-        event Action Redo;
+        event Action<string> OpenFileRequest;
+        event Action<string> CreateFileRequest;
+        event Action CreateTaskRequest;
+        event Action<TaskRecord> DeleteTaskRequest;
+        event Action<TaskRecord> ModifyTaskRequest;
+        event Action<TaskRecord> SetTaskDoneRequest;
+        event Action<TaskRecord> SetTaskUndoneRequest;
+        //event Action RefreshRequest;
+        event Action ExitRequest;
+        event Action UndoRequest;
+        event Action RedoRequest;
 
         bool UndoPossible { set; }
-
         bool RedoPossible { set; }
 
-        void SetTasks(List<TaskRecord> value);
-
+        void SetTasks(List<TaskRecord> tasks);
+        void RefreshTasks(List<TaskRecord> tasks);
         void SetFilePath(string value);
-
         void ShowError(string message);
+        void DeleteTask(TaskRecord task);
+        void AddTask(TaskRecord task);
     }
 }

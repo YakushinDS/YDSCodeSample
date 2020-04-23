@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using YDSCodeSample.Services.ErrorEventSink;
+using YDSCodeSample.Services.EventSink;
 
 namespace YDSCodeSample.Services.UndoStack
 {
@@ -12,11 +12,11 @@ namespace YDSCodeSample.Services.UndoStack
         private bool performingCommandSequence = false;
         private List<IUndoCommand> commands = new List<IUndoCommand>();
         private UndoSequence commandSequence;
-        private IErrorEventSink errorSink;
+        private IEventSink errorSink;
 
         public event EventHandler CommandPerformed;
         
-        public UndoStack(IErrorEventSink errorSink)
+        public UndoStack(IEventSink errorSink)
         {
             this.errorSink = errorSink;
         }
@@ -177,7 +177,7 @@ namespace YDSCodeSample.Services.UndoStack
 
         private void HandleError(IUndoCommand command, Exception exception)
         {
-            errorSink.ReportError(this, exception);
+            errorSink.InvokeErrorOccurred(this, exception);
         }
 
         private class UndoSequence : UndoStack, IUndoCommand
@@ -186,7 +186,7 @@ namespace YDSCodeSample.Services.UndoStack
 
             public string Description { get; }
 
-            public UndoSequence(string description, IErrorEventSink errorSink) : base(errorSink)
+            public UndoSequence(string description, IEventSink errorSink) : base(errorSink)
             {
                 this.Description = description;
                 capacity = Int32.MaxValue - 1;
@@ -199,7 +199,7 @@ namespace YDSCodeSample.Services.UndoStack
 
                 if (overfillDetected)
                 {
-                    errorSink.ReportError(this, new Exception("Command sequence is too large to perform"));
+                    errorSink.InvokeErrorOccurred(this, new Exception("Command sequence is too large to perform"));
 
                     return;
                 }
@@ -212,7 +212,7 @@ namespace YDSCodeSample.Services.UndoStack
             {
                 if (overfillDetected)
                 {
-                    errorSink.ReportError(this, new Exception("Command sequence is too large to rollback"));
+                    errorSink.InvokeErrorOccurred(this, new Exception("Command sequence is too large to rollback"));
 
                     return;
                 }

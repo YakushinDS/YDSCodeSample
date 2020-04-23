@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using YDSCodeSample.Models;
 
@@ -10,20 +12,21 @@ namespace YDSCodeSample.Views.Main
     public partial class FormMain : Form, IMainView
     {
         private ApplicationContext appContext;
+        private bool spacebarPressed;
 
         public bool UndoPossible { set => undoToolStripMenuItem.Enabled = value; }
         public bool RedoPossible { set => redoToolStripMenuItem.Enabled = value; }
 
-        public event Action<string> OpenFile;
-        public event Action<string> CreateFile;
-        public event Action CreateTask;
-        public event Action<TaskRecord> DeleteTask;
-        public event Action<TaskRecord> ModifyTask;
-        public event Action<TaskRecord> SetTaskDone;
-        public event Action<TaskRecord> SetTaskUndone;
-        public event Action Exit;
-        public event Action Undo;
-        public event Action Redo;
+        public event Action<string> OpenFileRequest;
+        public event Action<string> CreateFileRequest;
+        public event Action CreateTaskRequest;
+        public event Action<TaskRecord> DeleteTaskRequest;
+        public event Action<TaskRecord> ModifyTaskRequest;
+        public event Action<TaskRecord> SetTaskDoneRequest;
+        public event Action<TaskRecord> SetTaskUndoneRequest;
+        public event Action ExitRequest;
+        public event Action UndoRequest;
+        public event Action RedoRequest;
 
         public FormMain(ApplicationContext appContext)
         {
@@ -35,8 +38,12 @@ namespace YDSCodeSample.Views.Main
             ConfigureObjectListView();
         }
 
+        [DllImport("uxtheme.dll", SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
+        public static extern int SetWindowTheme(IntPtr hWnd, string pszSubAppName, string pszSubIdList);
+
         private void ConfigureObjectListView()
         {
+            SetWindowTheme(objectListView.Handle, "explorer", null);
             objectListView.CheckStateGetter = CheckStateGetter;
             objectListView.CheckStatePutter = CheckStatePutter;
         }
@@ -44,9 +51,9 @@ namespace YDSCodeSample.Views.Main
         private CheckState CheckStatePutter(object rowObject, CheckState newValue)
         {
             if (newValue == CheckState.Checked)
-                SetTaskDone?.Invoke((TaskRecord)rowObject);
+                SetTaskDoneRequest?.Invoke((TaskRecord)rowObject);
             else if (newValue == CheckState.Unchecked)
-                SetTaskUndone?.Invoke((TaskRecord)rowObject);
+                SetTaskUndoneRequest?.Invoke((TaskRecord)rowObject);
 
             return newValue;
         }
@@ -61,7 +68,7 @@ namespace YDSCodeSample.Views.Main
 
         public void SetTasks(List<TaskRecord> value)
         {
-            objectListView.SetObjects(value);
+            objectListView.SetObjects(value, true);
         }
 
         public void SetFilePath(string value)
@@ -80,7 +87,7 @@ namespace YDSCodeSample.Views.Main
         {
             if(saveFileDialog.ShowDialog(this) == DialogResult.OK)
             {
-                CreateFile?.Invoke(saveFileDialog.FileName);
+                CreateFileRequest?.Invoke(saveFileDialog.FileName);
             }
         }
 
@@ -88,23 +95,23 @@ namespace YDSCodeSample.Views.Main
         {
             if (openFileDialog.ShowDialog(this) == DialogResult.OK)
             {
-                OpenFile?.Invoke(openFileDialog.FileName);
+                OpenFileRequest?.Invoke(openFileDialog.FileName);
             }
         }
 
         private void createTaskToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CreateTask?.Invoke();
+            CreateTaskRequest?.Invoke();
         }
 
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Undo?.Invoke();
+            UndoRequest?.Invoke();
         }
 
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Redo?.Invoke();
+            RedoRequest?.Invoke();
         }
 
         public void ShowError(string message)
@@ -114,22 +121,22 @@ namespace YDSCodeSample.Views.Main
 
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ModifyTask?.Invoke((TaskRecord)objectListView.SelectedObjects[0]);
+            ModifyTaskRequest?.Invoke((TaskRecord)objectListView.SelectedObjects[0]);
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DeleteTask?.Invoke((TaskRecord)objectListView.SelectedObjects[0]);
+            DeleteTaskRequest?.Invoke((TaskRecord)objectListView.SelectedObjects[0]);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Exit?.Invoke();
+            ExitRequest?.Invoke();
         }
 
         private void objectListView_DoubleClick(object sender, EventArgs e)
         {
-            ModifyTask?.Invoke((TaskRecord)objectListView.SelectedObjects[0]);
+            ModifyTaskRequest?.Invoke((TaskRecord)objectListView.SelectedObjects[0]);
         }
 
         private void objectListView_SelectionChanged(object sender, EventArgs e)
@@ -138,6 +145,29 @@ namespace YDSCodeSample.Views.Main
 
             propertiesToolStripMenuItem.Enabled = enabled;
             deleteToolStripMenuItem.Enabled = enabled;
+        }
+
+        public void DeleteTask(TaskRecord task)
+        {
+            int select = objectListView.SelectedIndex;
+            objectListView.RemoveObject(task);
+
+            if (select != -1 && objectListView.GetItemCount() != 0)
+                if (select == objectListView.GetItemCount())
+                    objectListView.SelectedIndex = select - 1;
+                else
+                    objectListView.SelectedIndex = select;
+        }
+
+        public void AddTask(TaskRecord item)
+        {
+            objectListView.AddObject(item);
+            objectListView.SelectedObject = item;
+        }
+
+        public void RefreshTasks(List<TaskRecord> tasks)
+        {
+            objectListView.UpdateObjects(tasks);
         }
     }
 }

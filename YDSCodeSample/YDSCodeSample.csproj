@@ -68,13 +68,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TaskListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="IApplicationManager.cs" />
+    <Compile Include="Models\Model.cs" />
+    <Compile Include="Models\TagCategory.cs" />
+    <Compile Include="Models\Tag.cs" />
     <Compile Include="Presenters\MainPresenter.cs" />
     <Compile Include="Presenters\IPresenter.cs" />
     <Compile Include="Presenters\TaskPropertiesPresenter.cs" />
-    <Compile Include="Services\ErrorEventSink\ErrorEventArgs.cs" />
-    <Compile Include="Services\ErrorEventSink\ErrorEventSink.cs" />
+    <Compile Include="Services\EventSink\ErrorEventArgs.cs" />
+    <Compile Include="Services\EventSink\EventSink.cs" />
+    <Compile Include="Services\EventSink\FileOpenedEventArgs.cs" />
     <Compile Include="Services\Storage\IStorage.cs" />
+    <Compile Include="Services\EventSink\ModelChangedAction.cs" />
+    <Compile Include="Services\EventSink\ModelChangedEventArgs.cs" />
     <Compile Include="Services\UndoStack\IUndoCommand.cs" />
     <Compile Include="Services\UndoStack\IUndoStack.cs" />
     <Compile Include="Services\UndoStack\UndoStack.cs" />
@@ -88,7 +97,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ApplicationManager.cs" />
-    <Compile Include="Services\ErrorEventSink\IErrorEventSink.cs" />
+    <Compile Include="Services\EventSink\IEventSink.cs" />
     <Compile Include="Services\Storage\SQLiteStorage.cs" />
     <Compile Include="Views\TaskProperties\ITaskPropertiesView.cs" />
     <Compile Include="Views\TaskProperties\FormTaskProperties.cs">

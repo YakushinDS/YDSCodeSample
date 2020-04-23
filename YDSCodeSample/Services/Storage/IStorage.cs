@@ -2,25 +2,24 @@
 using System.Collections.Generic;
 using YDSCodeSample.Models;
 
-namespace YDSCodeSample.Services
+namespace YDSCodeSample.Services.Storage
 {
     interface IStorage
     {
-        event Action<TaskRecord> TaskCreated;
-        event Action<TaskRecord> TaskUpdated;
-        event Action<TaskRecord> TaskDeleted;
-        event Action<string> FileOpened;
+        string FilePath { get; }
 
-        void OpenFile(string path);
-
-        void CreateFile(string path);
-
+        bool OpenFile(string path);
+        bool CreateFile(string path);
+        bool CloseFile();
         List<TaskRecord> GetTasks();
-
-        void CreateTask(TaskRecord task);
-
-        void ModifyTask(TaskRecord task);
-
-        void DeleteTask(TaskRecord task);
+        List<Tag> GetTags();
+        //List<Tag> GetTaskTags(TaskRecord task);
+        //bool SetTaskTags(TaskRecord task, List<Tag> tags);
+        bool CreateTask(TaskRecord task);
+        bool UpdateTask(TaskRecord task);
+        bool DeleteTask(TaskRecord task);
+        bool CreateTag(Tag tag);
+        bool UpdateTag(Tag tag);
+        bool DeleteTag(Tag tag);
     }
 }

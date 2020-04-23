@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace YDSCodeSample.Services.ErrorEventSink
+namespace YDSCodeSample.Services.EventSink
 {
     public class ErrorEventArgs : EventArgs
     {

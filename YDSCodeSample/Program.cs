@@ -2,7 +2,8 @@
 using System.Windows.Forms;
 using YDSCodeSample.Presenters;
 using YDSCodeSample.Services;
-using YDSCodeSample.Services.ErrorEventSink;
+using YDSCodeSample.Services.EventSink;
+using YDSCodeSample.Services.Storage;
 using YDSCodeSample.Services.UndoStack;
 using YDSCodeSample.Views.Main;
 using YDSCodeSample.Views.TaskProperties;
@@ -26,7 +27,7 @@ namespace YDSCodeSample
                 .RegisterView<ITaskPropertiesView, FormTaskProperties>()
                 .RegisterService<IStorage, SQLiteStorage>()
                 .RegisterService<IUndoStack, UndoStack>()
-                .RegisterService<IErrorEventSink, ErrorEventSink>();
+                .RegisterService<IEventSink, EventSink>();
             manager.Run<MainPresenter>();
             Application.Run(context);
         }
